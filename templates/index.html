@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Weather Forecast — ML Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-shell">
+    <div class="hero">
+        <div class="title">Weather Forecast</div>
+        <div class="lead">Predict tomorrow's temperature using our lightweight ML model.</div>
+
+        <div class="search-result-row">
+            <div class="search-panel">
+                <form id="search-form" class="search-row" method="POST">
+                    <div class="input">
+                        <input id="city-input" name="city" placeholder="Type a city (e.g., Delhi)" autocomplete="off">
+                    </div>
+                    <button class="btn" type="submit">Get Forecast</button>
+                </form>
+
+                <div id="status-box" style="margin-top:12px"></div>
+            </div>
+
+            <div class="result-panel">
+                <div class="cards">
+                    <div id="result-box"></div>
+
+                    {% if weather_data %}
+                        <div class="card">
+                            <div class="row">
+                                <div>
+                                    <div class="city">{{ weather_data.city }}</div>
+                                    <div class="desc">{{ weather_data.description }}</div>
+                                </div>
+                                <div style="display:flex;align-items:center;gap:8px">
+                                    {% if weather_data.icon_url %}
+                                        <img src="{{ weather_data.icon_url }}" width="64" height="64" alt="icon">
+                                    {% endif %}
+                                    <div style="text-align:right">
+                                        <div class="temp">{{ weather_data.temp }}°C / {{ weather_data.temp_f }}°F</div>
+                                        <div class="small">Feels like {{ weather_data.feels_like }}°C / {{ weather_data.feels_like_f }}°F • {{ weather_data.humidity }}% humidity</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center">
+                                <div class="small">Model prediction (tomorrow)</div>
+                                <div class="predict"><div style="font-weight:800;font-size:20px">{{ weather_data.predicted_temp }}°C</div></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="footer"></div>
+    </div>
+
+    <!-- aside removed per request: main content now occupies full width -->
+</div>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+/* Minimal modern styling for weather app */
+:root{
+    --bg1: #0f172a;
+    --bg2: #0ea5e9;
+    --card: #ffffff;
+    --muted: #6b7280;
+    --accent: #2563eb;
+}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    /* background image (preferably placed in `static/images/bg.png`) */
+    /* If you move/copy Bgimg/bg.png -> static/images/bg.png, this URL will be used. */
+    background-image: linear-gradient(rgba(8,25,56,0.55), rgba(8,25,56,0.55)), url('/static/images/bg.png');
+    background-size: cover;
+    background-position: center center;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 16px;
+    color:var(--bg1);
+}
+.app-shell{
+    width:980px;
+    max-width:96vw;
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:18px;
+    justify-items: center;
+}
+.hero{
+    background: linear-gradient(135deg,#ffffffcc, #f1f5f9cc);
+    border-radius:14px;
+    padding:20px 22px;
+    box-shadow:0 14px 30px rgba(2,6,23,0.18);
+    width:100%;
+    max-width:980px;
+    margin:0 auto;
+}
+.hero .title{font-size:28px;font-weight:700;margin-bottom:4px}
+.hero .lead{color:var(--muted);margin-bottom:12px;font-size:14px}
+.search-row{display:flex;gap:10px;align-items:center}
+.input{flex:1;display:flex;align-items:center;padding:12px 12px;border-radius:12px;background:#fff;border:1px solid #e6eef8;transition:box-shadow .16s ease,border-color .12s ease}
+.input input{border:0;outline:none;font-size:18px;width:100%;color:var(--bg1);padding:8px 0}
+.input input::placeholder{color:#64748b;opacity:1}
+.input:focus-within{box-shadow:0 10px 30px rgba(37,99,235,0.08);border-color:var(--accent)}
+.btn{background:var(--accent);color:#fff;padding:8px 10px;border-radius:9px;border:0;font-weight:700;cursor:pointer;white-space:nowrap;font-size:15px}
+.btn:active{transform:translateY(1px)}
+.small{font-size:13px;color:var(--muted)}
+.cards{
+    display:flex;flex-direction:column;gap:16px;margin-top:12px
+}
+#result-box:empty { display: none; }
+
+/* search-result two-column layout */
+.search-result-row{display:flex;gap:14px;align-items:flex-start}
+.search-panel{flex:0 0 46%;min-width:260px}
+.result-panel{flex:1 1 54%}
+.search-panel .input{background:#fff}
+
+@media (max-width:920px){
+    .search-result-row{flex-direction:column}
+    .search-panel{flex:0 0 auto;width:100%}
+    .result-panel{width:100%}
+}
+.card{background:linear-gradient(180deg,#fff,#f8fafc);padding:14px;border-radius:12px;border:1px solid #e6eef8}
+.card .row{display:flex;justify-content:space-between;align-items:center}
+.card .city{font-weight:700;font-size:18px}
+.card .desc{color:var(--muted);font-size:13px}
+.card .temp{font-size:36px;font-weight:800}
+.predict{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.footer{font-size:12px;color:var(--muted);text-align:center;margin-top:12px}
+/* chart + forecast layout */
+.chart-layout{
+    display:flex;
+    gap:18px;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+}
+
+/* Forecast list (Next days) - enlarged and spaced */
+.forecast-list{
+    flex:0 0 20%; /* reduce to give chart more horizontal space */
+    max-height: 560px; /* allow more vertical space */
+    overflow-y: auto;
+    border-right:1px solid #e6eef8;
+    padding-right:8px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+/* Chart container - takes remaining space */
+.chart-container{
+    flex:1 1 80%; /* increase chart share to ~80% */
+    min-height: 560px; /* larger canvas area */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%; /* ensure it fills remaining space */
+}
+
+.chart-container canvas{
+    width:100% !important;
+    max-width:100%;
+    height:560px !important; /* bigger chart height */
+    border-radius:10px;
+    box-shadow:0 16px 40px rgba(2,6,23,0.12);
+}
+
+/* ensure chart card uses full available width inside hero */
+.chart-layout{width:100%}
+
+/* make the chart card visually stretch to the hero's inner edges
+   by negating the card's horizontal padding while keeping inner spacing */
+.card.chart-layout{
+    /* hero has horizontal padding 22px; negate that so the chart card
+       visually reaches the hero's inner edges while keeping inner padding */
+    margin-left:-22px;
+    margin-right:-22px;
+    padding-left:22px;
+    padding-right:22px;
+    background: linear-gradient(180deg,#ffffff,#f7fbff);
+    border-radius:12px;
+    border:1px solid #e6eef8;
+}
+
+.card.chart-layout > .forecast-list{padding:18px 20px}
+.card.chart-layout > .chart-container{padding:14px 20px}
+.card.chart-layout > .forecast-list{padding:20px 22px}
+.card.chart-layout > .chart-container{padding:18px 22px}
+
+/* enlarge forecast item typography and spacing for improved readability */
+.forecast-item{
+    padding:12px 14px;
+    border-radius:10px;
+    background:linear-gradient(180deg,#ffffff,#fbfdff);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
+    border:1px solid #f1f5f9;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+.forecast-item .forecast-date{font-size:14px}
+.forecast-item .forecast-temp{font-size:15px}
+.forecast-item .forecast-desc{font-size:13px}
+
+/* polish forecast items */
+.forecast-item{
+    padding:10px 12px;
+    border-radius:8px;
+    background:linear-gradient(180deg,#ffffff,#fbfdff);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.6);
+    border:1px solid #f1f5f9;
+}
+.forecast-item .forecast-desc{color:var(--muted);margin-top:6px}
+
+/* individual forecast items */
+.forecast-item{
+    padding:6px 0;
+    border-bottom:1px dashed #e5e7eb;
+    font-size:13px;
+}
+.forecast-item:last-child{
+    border-bottom:none;
+}
+.forecast-date{
+    font-weight:600;
+}
+.forecast-temp{
+    font-weight:600;
+}
+.forecast-desc{
+    font-size:12px;
+    color:var(--muted);
+}
+
+/* responsive: stack forecast and chart on narrow screens */
+@media (max-width:920px){
+    .card.chart-layout{margin-left:0;margin-right:0;padding-left:14px;padding-right:14px}
+    .chart-layout{flex-direction:column;gap:12px}
+    .forecast-list{flex:0 0 auto;border-right:0;padding:0;max-height:240px}
+    .chart-container{flex:1;width:100%}
+    .chart-container canvas{height:360px !important}
+}
+
+
+/* (pie chart removed) */
+/* hero image sizing and responsive rules */
+/* hero image removed from aside; keep class in case you reintroduce an image elsewhere */
+.hero-img{display:none}
+
+/* responsive */
+@media (max-width:1100px){
+    .app-shell{grid-template-columns:1fr}
+}
+
+/* loader */
+.loader{border:4px solid #e6eef8;border-top:4px solid var(--accent);border-radius:50%;width:36px;height:36px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.error{background:#fee2e2;border:1px solid #fca5a5;color:#991b1b;padding:8px;border-radius:8px}
+.success{background:#ecfdf5;border:1px solid #bbf7d0;color:#065f46;padding:8px;border-radius:8px}
