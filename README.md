@@ -143,7 +143,7 @@ This project is open source and available under the MIT License.
 
 ## Author
 
-Developed by Ayush Singh
+Developed by Rudra_Gupta
 
 ## Disclaimer
 
